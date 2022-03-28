@@ -1,37 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FillEllipse
 {
     public partial class Form1 : Form
     {
+        private int level;
+
         public Form1()
         {
             InitializeComponent();
+            level = 0;
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            var rect = new Rectangle(10, 10, 300, 200);
-
+            var offset = 10;
+            var width = 300;
+            var heigh = 200;
+            var rect = new Rectangle(offset, 10, width, heigh);
             var canvas = e.Graphics;
             canvas.DrawEllipse(Pens.Black, rect);
-
+            var fillRect = new Rectangle(offset, 10 + heigh - level, width, heigh);
             using (var path = new GraphicsPath())
             {
                 path.AddEllipse(rect);
-                using (var region = new Region(path))
+                using (var ellipseRegion = new Region(path))
                 {
-                    canvas.FillRegion(Brushes.Red, region);
+                    ellipseRegion.Intersect(fillRect);
+                    canvas.FillRegion(Brushes.Red, ellipseRegion);
                 }
+            }
+        }
+
+        private void timer1_Tick(object sender, System.EventArgs e)
+        {
+            if (level < 200)
+            {
+                level++;
+                Invalidate();
             }
         }
     }
