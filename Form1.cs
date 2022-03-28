@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,15 @@ namespace FillEllipse
 
             var canvas = e.Graphics;
             canvas.DrawEllipse(Pens.Black, rect);
+
+            using (var path = new GraphicsPath())
+            {
+                path.AddEllipse(rect);
+                using (var region = new Region(path))
+                {
+                    canvas.FillRegion(Brushes.Red, region);
+                }
+            }
         }
     }
 }
