@@ -16,5 +16,13 @@ namespace FillEllipse
         {
             InitializeComponent();
         }
+
+        private void Form1_Paint(object sender, PaintEventArgs e)
+        {
+            var rect = new Rectangle(10, 10, 300, 200);
+
+            var canvas = e.Graphics;
+            canvas.DrawEllipse(Pens.Black, rect);
+        }
     }
 }
